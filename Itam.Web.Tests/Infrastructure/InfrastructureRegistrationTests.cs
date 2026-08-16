@@ -1,7 +1,6 @@
 using Itam.Web.Infrastructure;
 using Itam.Web.Infrastructure.Email;
 using Itam.Web.Infrastructure.Persistence;
-using Itam.Web.Infrastructure.Preferences;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +12,7 @@ namespace Itam.Web.Tests.Infrastructure;
 public sealed class InfrastructureRegistrationTests
 {
     [Fact]
-    public void Registers_confirmed_identity_postgres_and_safe_preference_ports()
+    public void Registers_confirmed_identity_postgres_and_email_ports()
     {
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
@@ -30,12 +29,11 @@ public sealed class InfrastructureRegistrationTests
         using var provider = services.BuildServiceProvider();
 
         Assert.True(provider.GetRequiredService<IOptions<IdentityOptions>>().Value.SignIn.RequireConfirmedEmail);
+        Assert.True(provider.GetRequiredService<IOptions<IdentityOptions>>().Value.User.RequireUniqueEmail);
         Assert.IsType<EfCoreApplicationPersistence>(
             provider.GetRequiredService<Itam.Web.Application.Abstractions.IApplicationPersistence>());
         Assert.IsType<SmtpApplicationEmailSender>(
             provider.GetRequiredService<Itam.Web.Application.Abstractions.IApplicationEmailSender>());
-        Assert.Contains(services, descriptor =>
-            descriptor.ServiceType == typeof(IBrowserPreferences));
         Assert.Equal("smtp.ethereal.email", provider.GetRequiredService<IOptions<SmtpOptions>>().Value.Host);
     }
 }

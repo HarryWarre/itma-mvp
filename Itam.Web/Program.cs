@@ -3,6 +3,7 @@ using Itam.Web.Components;
 using Itam.Web.Infrastructure;
 using Itam.Web.Infrastructure.Logging;
 using Itam.Web.Infrastructure.Persistence;
+using Itam.Web.Infrastructure.Authentication;
 using MudBlazor.Services;
 using Serilog;
 
@@ -46,5 +47,6 @@ if (app.Configuration.GetValue<bool>("Database:ApplyMigrations"))
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+app.MapAuthenticationEndpoints();
 
 app.Run();

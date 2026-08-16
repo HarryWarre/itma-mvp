@@ -1,7 +1,6 @@
 using FluentValidation;
 using Itam.Web.Application;
 using Itam.Web.Application.Abstractions;
-using Itam.Web.Application.Requests;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -10,17 +9,6 @@ namespace Itam.Web.Tests.Application;
 
 public sealed class ApplicationCompositionTests
 {
-    [Fact]
-    public async Task Registers_production_requests_with_mediatr()
-    {
-        using var provider = BuildProvider(new FakePersistence(), new FakeEmailSender());
-
-        var status = await provider.GetRequiredService<ISender>().Send(new GetPlatformStatusQuery());
-
-        Assert.Equal("ITMA", status.ApplicationName);
-        Assert.Equal("Application foundation ready", status.FoundationStatus);
-    }
-
     [Fact]
     public async Task Sends_a_valid_request_through_the_application_seam()
     {

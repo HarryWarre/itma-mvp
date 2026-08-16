@@ -7,7 +7,8 @@ namespace Itam.Web.Infrastructure.Email;
 
 public sealed class SmtpApplicationEmailSender(
     IOptions<SmtpOptions> options,
-    ILogger<SmtpApplicationEmailSender> logger)
+    ILogger<SmtpApplicationEmailSender> logger,
+    IHostEnvironment? environment = null)
     : IApplicationEmailSender
 {
     public async Task SendAsync(
@@ -20,6 +21,19 @@ public sealed class SmtpApplicationEmailSender(
         {
             throw new InvalidOperationException(
                 "SMTP is not configured. Set Smtp:Host and Smtp:FromAddress before sending email.");
+        }
+
+        if (smtpOptions.Host.Equals("smtp.ethereal.email", StringComparison.OrdinalIgnoreCase) &&
+            environment is not null &&
+            !environment.IsDevelopment())
+        {
+            throw new InvalidOperationException("Ethereal SMTP is available only in the Development environment.");
+        }
+
+        if (string.IsNullOrWhiteSpace(smtpOptions.UserName) !=
+            string.IsNullOrWhiteSpace(smtpOptions.Password))
+        {
+            throw new InvalidOperationException("SMTP username and password must be configured together.");
         }
 
         using var message = new MailMessage(smtpOptions.FromAddress, email.Recipient)

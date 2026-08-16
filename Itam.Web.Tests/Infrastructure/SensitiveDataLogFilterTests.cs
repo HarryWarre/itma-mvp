@@ -19,6 +19,7 @@ public sealed class SensitiveDataLogFilterTests
 
         logger.Information("Registration attempted with {Password}", "never-write-this");
         logger.Information("Email payload {@Payload}", new { Body = "never-write-this" });
+        logger.Information("Generic input {Value}", "never-write-this");
         logger.Information(
             "Application email sent to recipient domain {RecipientDomain}",
             "example.invalid");

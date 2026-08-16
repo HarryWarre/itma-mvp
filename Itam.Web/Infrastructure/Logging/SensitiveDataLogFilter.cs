@@ -19,7 +19,19 @@ public static class SensitiveDataLogFilter
         "email",
         "secret",
         "confirmationlink",
-        "resetlink"
+        "resetlink",
+        "link",
+        "code",
+        "value",
+        "payload",
+        "data"
+    ];
+
+    private static readonly string[] SensitiveMessageFragments =
+    [
+        "password",
+        "token",
+        "smtp credential"
     ];
 
     public static bool IsSensitive(LogEvent logEvent)
@@ -31,15 +43,8 @@ public static class SensitiveDataLogFilter
             return true;
         }
 
-        return logEvent.MessageTemplate.Text.Contains(
-            "password",
-            StringComparison.OrdinalIgnoreCase)
-            || logEvent.MessageTemplate.Text.Contains(
-                "token",
-                StringComparison.OrdinalIgnoreCase)
-            || logEvent.MessageTemplate.Text.Contains(
-                "smtp credential",
-                StringComparison.OrdinalIgnoreCase);
+        return SensitiveMessageFragments.Any(fragment =>
+            logEvent.MessageTemplate.Text.Contains(fragment, StringComparison.OrdinalIgnoreCase));
     }
 
     private static bool IsSensitivePropertyName(string propertyName) =>
