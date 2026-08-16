@@ -1,0 +1,19 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>Systemic Favicon</title>
+  <desc>Systemic IT asset intelligence favicon mark.</desc>
+  <path d="M256 62L393 141V299L256 378L119 299V141L256 62Z" stroke="#2563EB" stroke-width="34" stroke-linejoin="round" fill="none"/>
+  <path d="M119 299V362L256 441L393 362V299" stroke="#BC4800" stroke-width="34" stroke-linejoin="round" fill="none"/>
+  <circle cx="256" cy="62" r="34" fill="#2563EB" stroke="#F8FAFC" stroke-width="12"/>
+  <circle cx="119" cy="299" r="34" fill="#2563EB" stroke="#F8FAFC" stroke-width="12"/>
+  <circle cx="393" cy="299" r="34" fill="#64748B" stroke="#F8FAFC" stroke-width="12"/>
+  <circle cx="256" cy="441" r="34" fill="#BC4800" stroke="#F8FAFC" stroke-width="12"/>
+  <path d="M176 196L256 150L336 196V288L256 334L176 288V196Z" fill="#2563EB" stroke="#F8FAFC" stroke-width="12" stroke-linejoin="round"/>
+  <path d="M176 196L256 242L336 196M256 242V334" stroke="#F8FAFC" stroke-width="12" stroke-linejoin="round"/>
+  <path d="M195 245L236 269M195 274L236 298" stroke="#F8FAFC" stroke-width="11" stroke-linecap="round"/>
+  <path d="M276 269L317 245M276 298L317 274" stroke="#E2E8F0" stroke-width="11" stroke-linecap="round"/>
+  <path d="M270 166H318L342 190L318 214H270L246 190L270 166Z" fill="#F8FAFC"/>
+  <circle cx="314" cy="190" r="8" fill="#2563EB"/>
+  <circle cx="400" cy="168" r="13" fill="#2563EB"/>
+  <circle cx="400" cy="207" r="13" fill="#64748B"/>
+  <circle cx="400" cy="246" r="13" fill="#BC4800"/>
+</svg>
