@@ -18,3 +18,16 @@
     right: 0.75rem;
     top: 0.5rem;
 }
+
+.brand-link {
+    display: block;
+    line-height: 0;
+    width: 100%;
+}
+
+.brand-logo {
+    display: block;
+    height: auto;
+    max-width: 100%;
+    width: 220px;
+}
