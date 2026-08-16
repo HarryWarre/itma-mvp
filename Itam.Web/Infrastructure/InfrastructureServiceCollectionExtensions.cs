@@ -1,8 +1,7 @@
-using Blazored.LocalStorage;
 using Itam.Web.Application.Abstractions;
 using Itam.Web.Infrastructure.Email;
 using Itam.Web.Infrastructure.Persistence;
-using Itam.Web.Infrastructure.Preferences;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,22 +24,34 @@ public static class InfrastructureServiceCollectionExtensions
             {
                 options.SignIn.RequireConfirmedAccount = true;
                 options.SignIn.RequireConfirmedEmail = true;
+                options.User.RequireUniqueEmail = true;
             })
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddSignInManager()
             .AddDefaultTokenProviders();
         services.AddAuthentication(IdentityConstants.ApplicationScheme)
             .AddIdentityCookies();
+        services.Configure<CookieAuthenticationOptions>(
+            IdentityConstants.ApplicationScheme,
+            options => options.Events.OnValidatePrincipal = async context =>
+            {
+                var userManager = context.HttpContext.RequestServices
+                    .GetRequiredService<UserManager<ApplicationUser>>();
+                var user = context.Principal is null
+                    ? null
+                    : await userManager.GetUserAsync(context.Principal);
+                if (user is null || !user.IsActive)
+                {
+                    context.RejectPrincipal();
+                }
+            });
         services.AddAuthorization();
 
         services.Configure<SmtpOptions>(configuration.GetSection(SmtpOptions.SectionName));
         services.AddScoped<IApplicationPersistence, EfCoreApplicationPersistence>();
         services.AddScoped<IApplicationEmailSender, SmtpApplicationEmailSender>();
-
-        // Feature components receive only the named preference port below. Authentication
-        // state, tokens, passwords, and email contents never belong in browser storage.
-        services.AddBlazoredLocalStorage();
-        services.AddScoped<IBrowserPreferences, BrowserPreferences>();
+        services.AddScoped<IEmailSender<ApplicationUser>, IdentityEmailSender>();
 
         return services;
     }

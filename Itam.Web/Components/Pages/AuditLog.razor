@@ -1,0 +1,56 @@
+@page "/audit-log"
+@rendermode InteractiveServer
+@attribute [Authorize]
+@inject ISender Sender
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<PageTitle>Audit log | ITMA</PageTitle>
+
+<MudText Typo="Typo.h4" GutterBottom="true">Audit log</MudText>
+<MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-4">Read-only activity for your tenant.</MudText>
+
+<MudTable Items="_log.Entries" Hover="true" Dense="true">
+    <HeaderContent>
+        <MudTh>Time</MudTh>
+        <MudTh>Action</MudTh>
+        <MudTh>Target</MudTh>
+        <MudTh>Outcome</MudTh>
+        <MudTh>Actor</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Time">@context.TimestampUtc.ToLocalTime()</MudTd>
+        <MudTd DataLabel="Action">@context.Action</MudTd>
+        <MudTd DataLabel="Target">@context.Target</MudTd>
+        <MudTd DataLabel="Outcome">@context.Outcome</MudTd>
+        <MudTd DataLabel="Actor">@context.ActorUserId</MudTd>
+    </RowTemplate>
+</MudTable>
+
+<MudStack Row="true" AlignItems="AlignItems.Center" Class="mt-4">
+    <MudButton Disabled="@(_log.Page <= 1)" OnClick="PreviousPage">Previous</MudButton>
+    <MudText>Page @_log.Page of @PageCount</MudText>
+    <MudButton Disabled="@(_log.Page >= PageCount)" OnClick="NextPage">Next</MudButton>
+</MudStack>
+
+@code {
+    private string _userId = string.Empty;
+    private PagedAuditLog _log = new([], 1, 20, 0);
+
+    private int PageCount => Math.Max(1, (int)Math.Ceiling(_log.TotalCount / (double)_log.PageSize));
+
+    protected override async Task OnInitializedAsync()
+    {
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        _userId = state.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+        await LoadPage(1);
+    }
+
+    private Task PreviousPage() => LoadPage(_log.Page - 1);
+
+    private Task NextPage() => LoadPage(_log.Page + 1);
+
+    private async Task LoadPage(int page)
+    {
+        _log = await Sender.Send(new GetAuditLogQuery(_userId, page, 20));
+    }
+}

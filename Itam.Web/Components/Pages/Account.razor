@@ -1,0 +1,24 @@
+@page "/account"
+@attribute [Authorize]
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<PageTitle>Account | ITMA</PageTitle>
+
+<MudPaper Class="pa-6">
+    <MudText Typo="Typo.h4" GutterBottom="true">Account</MudText>
+    <MudText Typo="Typo.body1">Signed in as @_email.</MudText>
+    <form method="post" action="/account/logout" class="mt-4">
+        <AntiforgeryToken />
+        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Outlined" Color="Color.Primary">Sign out</MudButton>
+    </form>
+</MudPaper>
+
+@code {
+    private string _email = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        _email = state.User.Identity?.Name ?? "account";
+    }
+}

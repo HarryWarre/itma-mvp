@@ -1,5 +1,4 @@
 @page "/"
-@inject ISender Sender
 
 <PageTitle>Home | ITMA</PageTitle>
 
@@ -8,44 +7,30 @@
         <MudText Typo="Typo.overline" Color="Color.Primary">Identity foundation</MudText>
         <MudText Typo="Typo.h3" GutterBottom="true">Build a secure workspace.</MudText>
         <MudText Typo="Typo.body1" Color="Color.Secondary">
-            ITMA is ready for the account and tenant vertical slices.
+            ITMA gives every account a secure, isolated workspace.
         </MudText>
     </div>
 
-    @if (_status is not null)
-    {
-        <MudAlert Severity="Severity.Success" Variant="Variant.Outlined">
-            @_status.FoundationStatus
-        </MudAlert>
-    }
-
     <MudGrid>
-        <MudItem xs="12" sm="4">
-            <MudPaper Class="pa-4" Elevation="1">
-                <MudText Typo="Typo.subtitle1">Authentication</MudText>
-                <MudText Typo="Typo.body2" Color="Color.Secondary">Protected account surfaces are staged.</MudText>
-            </MudPaper>
-        </MudItem>
-        <MudItem xs="12" sm="4">
-            <MudPaper Class="pa-4" Elevation="1">
-                <MudText Typo="Typo.subtitle1">Tenant workspace</MudText>
-                <MudText Typo="Typo.body2" Color="Color.Secondary">Tenant-aware persistence is ready for the next slice.</MudText>
-            </MudPaper>
-        </MudItem>
-        <MudItem xs="12" sm="4">
-            <MudPaper Class="pa-4" Elevation="1">
-                <MudText Typo="Typo.subtitle1">Audit history</MudText>
-                <MudText Typo="Typo.body2" Color="Color.Secondary">A read-only activity surface is reserved in navigation.</MudText>
-            </MudPaper>
-        </MudItem>
+        @foreach (var card in Cards)
+        {
+            <MudItem xs="12" sm="4">
+                <MudPaper Class="pa-4" Elevation="1">
+                    <MudText Typo="Typo.subtitle1">@card.Title</MudText>
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">@card.Description</MudText>
+                </MudPaper>
+            </MudItem>
+        }
     </MudGrid>
 </MudStack>
 
 @code {
-    private PlatformStatus? _status;
+    private static IReadOnlyList<FoundationCard> Cards { get; } =
+    [
+        new("Authentication", "Register with email verification and recover access safely."),
+        new("Tenant workspace", "Each account starts in one isolated Owner workspace."),
+        new("Audit history", "Review read-only security and administrative activity.")
+    ];
 
-    protected override async Task OnInitializedAsync()
-    {
-        _status = await Sender.Send(new GetPlatformStatusQuery());
-    }
+    private sealed record FoundationCard(string Title, string Description);
 }

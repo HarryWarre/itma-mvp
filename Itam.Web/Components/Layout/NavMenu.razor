@@ -2,9 +2,6 @@
     <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">
         Home
     </MudNavLink>
-    <MudNavLink Href="/dashboard" Icon="@Icons.Material.Filled.Dashboard">
-        Dashboard
-    </MudNavLink>
 
     <MudText Typo="Typo.overline" Class="mt-5 mb-2 px-4">Protected features</MudText>
     <MudNavLink Href="/account" Icon="@Icons.Material.Filled.Person">
@@ -16,4 +13,12 @@
     <MudNavLink Href="/audit-log" Icon="@Icons.Material.Filled.History">
         Audit log
     </MudNavLink>
+
+    <AuthorizeView>
+        <NotAuthorized>
+            <MudText Typo="Typo.overline" Class="mt-5 mb-2 px-4">Account</MudText>
+            <MudNavLink Href="/account/login" Icon="@Icons.Material.Filled.Login">Sign in</MudNavLink>
+            <MudNavLink Href="/account/register" Icon="@Icons.Material.Filled.PersonAdd">Register</MudNavLink>
+        </NotAuthorized>
+    </AuthorizeView>
 </MudNavMenu>

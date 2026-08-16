@@ -41,6 +41,9 @@ namespace Itam.Web.Infrastructure.Persistence.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
 
@@ -77,13 +80,185 @@ namespace Itam.Web.Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
+                        .IsUnique()
+                        .HasDatabaseName("EmailIndex")
+                        .HasFilter("\"NormalizedEmail\" IS NOT NULL");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Itam.Web.Infrastructure.Persistence.AuditLogEntry", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<string>("ActorUserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MetadataJson")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Outcome")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Target")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("TimestampUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId", "TimestampUtc");
+
+                    b.ToTable("AuditLogEntries");
+                });
+
+            modelBuilder.Entity("Itam.Web.Infrastructure.Persistence.PermissionDefinition", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("PermissionDefinitions");
+                });
+
+            modelBuilder.Entity("Itam.Web.Infrastructure.Persistence.RolePermission", b =>
+                {
+                    b.Property<string>("RoleName")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("PermissionName")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.HasKey("RoleName", "PermissionName");
+
+                    b.HasIndex("PermissionName");
+
+                    b.ToTable("RolePermissions");
+                });
+
+            modelBuilder.Entity("Itam.Web.Infrastructure.Persistence.SettingEntry", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<string>("Scope")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("UpdatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Key", "Scope", "TenantId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("Settings");
+                });
+
+            modelBuilder.Entity("Itam.Web.Infrastructure.Persistence.Tenant", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name");
+
+                    b.ToTable("Tenants");
+                });
+
+            modelBuilder.Entity("Itam.Web.Infrastructure.Persistence.TenantMembership", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("TenantId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("TenantMemberships");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -218,6 +393,37 @@ namespace Itam.Web.Infrastructure.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Itam.Web.Infrastructure.Persistence.RolePermission", b =>
+                {
+                    b.HasOne("Itam.Web.Infrastructure.Persistence.PermissionDefinition", "Permission")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("PermissionName")
+                        .HasPrincipalKey("Name")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+                });
+
+            modelBuilder.Entity("Itam.Web.Infrastructure.Persistence.TenantMembership", b =>
+                {
+                    b.HasOne("Itam.Web.Infrastructure.Persistence.Tenant", "Tenant")
+                        .WithMany("Memberships")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Itam.Web.Infrastructure.Persistence.ApplicationUser", "User")
+                        .WithMany("TenantMemberships")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -267,6 +473,21 @@ namespace Itam.Web.Infrastructure.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Itam.Web.Infrastructure.Persistence.ApplicationUser", b =>
+                {
+                    b.Navigation("TenantMemberships");
+                });
+
+            modelBuilder.Entity("Itam.Web.Infrastructure.Persistence.PermissionDefinition", b =>
+                {
+                    b.Navigation("RolePermissions");
+                });
+
+            modelBuilder.Entity("Itam.Web.Infrastructure.Persistence.Tenant", b =>
+                {
+                    b.Navigation("Memberships");
                 });
 #pragma warning restore 612, 618
         }
