@@ -13,3 +13,6 @@
 ## Local environment files
 *.local.json
 !.config/
+
+# env
+*.env
