@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Itam.Web/Itam.Web.csproj" />
+  <Project Path="Itam.Web.Tests/Itam.Web.Tests.csproj" />
+</Solution>
