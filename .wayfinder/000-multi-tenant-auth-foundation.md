@@ -12,7 +12,9 @@ Produce an implementation-ready specification for the ITMA MVP authentication fo
 
 ## Notes
 
-Domain: tenant-aware identity and access management for the existing .NET 10 Blazor Web App. UI framework: MudBlazor.
+Domain: tenant-aware identity and access management for the existing .NET 10 Blazor Web App.
+
+Chosen application stack: MudBlazor for UI, FluentValidation for validation, Serilog for structured logging, MediatR for application request/notification dispatch, Blazored.LocalStorage for browser local storage, and PostgreSQL through EF Core/Npgsql.
 
 Consult `domain-modeling` and `grilling` for every HITL decision; consult `research` for external framework and service facts. PostgreSQL is the persistence target. Ethereal is the initial local SMTP test service. Wayfinding plans the work; implementation begins only after the map is clear.
 
@@ -30,6 +32,7 @@ Consult `domain-modeling` and `grilling` for every HITL decision; consult `resea
 - The settings schema, editable values, and precedence behavior at system, tenant, and user scopes.
 - The page-level UI, navigation, validation, error states, and acceptance criteria for each feature.
 - The MudBlazor application shell, navigation structure, responsive behavior, theme, and reusable form/table conventions.
+- The responsibility boundaries and safe usage patterns for FluentValidation, Serilog, MediatR, and Blazored.LocalStorage.
 - Production email delivery, deployment configuration, secret management, observability, and operational retention policies.
 
 ## Out of scope
