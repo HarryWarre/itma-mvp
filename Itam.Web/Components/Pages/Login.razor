@@ -13,7 +13,7 @@
     {
         <MudAlert Severity="Severity.Success" Class="mb-4">Your password was reset. You can sign in now.</MudAlert>
     }
-    <form method="post" action="/account/login">
+    <form method="post" action="/api/account/login">
         <AntiforgeryToken />
         <label class="d-block mb-3">Email<input class="mud-input-root mud-input-root-text mud-input-outlined" type="email" name="Email" autocomplete="email" required /></label>
         <label class="d-block mb-3">Password<input class="mud-input-root mud-input-root-text mud-input-outlined" type="password" name="Password" autocomplete="current-password" required /></label>

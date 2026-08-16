@@ -7,7 +7,7 @@
 <MudPaper Class="pa-6">
     <MudText Typo="Typo.h4" GutterBottom="true">Account</MudText>
     <MudText Typo="Typo.body1">Signed in as @_email.</MudText>
-    <form method="post" action="/account/logout" class="mt-4">
+    <form method="post" action="/api/account/logout" class="mt-4">
         <AntiforgeryToken />
         <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Outlined" Color="Color.Primary">Sign out</MudButton>
     </form>

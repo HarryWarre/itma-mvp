@@ -9,7 +9,7 @@ public static class AuthenticationEndpointExtensions
 {
     public static IEndpointRouteBuilder MapAuthenticationEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapPost("/account/register", async (
+        endpoints.MapPost("/api/account/register", async (
             HttpRequest request,
             ISender sender,
             CancellationToken cancellationToken) =>
@@ -24,7 +24,7 @@ public static class AuthenticationEndpointExtensions
                 : Results.Redirect($"/account/register?error={HttpUtility.UrlEncode(result.Error)}");
         }).WithMetadata(new RequireAntiforgeryTokenAttribute());
 
-        endpoints.MapPost("/account/login", async (
+        endpoints.MapPost("/api/account/login", async (
             HttpRequest request,
             ISender sender,
             CancellationToken cancellationToken) =>
@@ -44,7 +44,7 @@ public static class AuthenticationEndpointExtensions
             return Results.Redirect($"/account/login?error={HttpUtility.UrlEncode(error)}");
         }).WithMetadata(new RequireAntiforgeryTokenAttribute());
 
-        endpoints.MapPost("/account/logout", async (
+        endpoints.MapPost("/api/account/logout", async (
             ISender sender,
             CancellationToken cancellationToken) =>
         {
@@ -64,7 +64,7 @@ public static class AuthenticationEndpointExtensions
             return Results.Redirect($"/account/confirmation-result?success={confirmed.ToString().ToLowerInvariant()}");
         });
 
-        endpoints.MapPost("/account/forgot-password", async (
+        endpoints.MapPost("/api/account/forgot-password", async (
             HttpRequest request,
             ISender sender,
             CancellationToken cancellationToken) =>
@@ -74,7 +74,7 @@ public static class AuthenticationEndpointExtensions
             return Results.Redirect("/account/reset-email-sent");
         }).WithMetadata(new RequireAntiforgeryTokenAttribute());
 
-        endpoints.MapPost("/account/reset-password", async (
+        endpoints.MapPost("/api/account/reset-password", async (
             HttpRequest request,
             ISender sender,
             CancellationToken cancellationToken) =>

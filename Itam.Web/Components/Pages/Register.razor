@@ -12,7 +12,7 @@
     {
         <MudAlert Severity="Severity.Error" Class="mb-4">@Error</MudAlert>
     }
-    <form method="post" action="/account/register">
+    <form method="post" action="/api/account/register">
         <AntiforgeryToken />
         <label class="d-block mb-3">Email<input class="mud-input-root mud-input-root-text mud-input-outlined" type="email" name="Email" autocomplete="email" required /></label>
         <label class="d-block mb-3">Password<input class="mud-input-root mud-input-root-text mud-input-outlined" type="password" name="Password" autocomplete="new-password" required /></label>
