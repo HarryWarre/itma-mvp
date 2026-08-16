@@ -1,0 +1,15 @@
+## .NET build output
+**/bin/
+**/obj/
+
+## User-specific files
+*.user
+*.suo
+
+## IDE files
+.vscode/
+.idea/
+
+## Local environment files
+*.local.json
+!.config/
