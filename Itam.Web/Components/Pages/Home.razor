@@ -1,7 +1,51 @@
-﻿@page "/"
+@page "/"
+@inject ISender Sender
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Home | ITMA</PageTitle>
 
-<h1>Hello, world!</h1>
+<MudStack Spacing="3">
+    <div>
+        <MudText Typo="Typo.overline" Color="Color.Primary">Identity foundation</MudText>
+        <MudText Typo="Typo.h3" GutterBottom="true">Build a secure workspace.</MudText>
+        <MudText Typo="Typo.body1" Color="Color.Secondary">
+            ITMA is ready for the account and tenant vertical slices.
+        </MudText>
+    </div>
 
-Welcome to your new app.
+    @if (_status is not null)
+    {
+        <MudAlert Severity="Severity.Success" Variant="Variant.Outlined">
+            @_status.FoundationStatus
+        </MudAlert>
+    }
+
+    <MudGrid>
+        <MudItem xs="12" sm="4">
+            <MudPaper Class="pa-4" Elevation="1">
+                <MudText Typo="Typo.subtitle1">Authentication</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">Protected account surfaces are staged.</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="4">
+            <MudPaper Class="pa-4" Elevation="1">
+                <MudText Typo="Typo.subtitle1">Tenant workspace</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">Tenant-aware persistence is ready for the next slice.</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="4">
+            <MudPaper Class="pa-4" Elevation="1">
+                <MudText Typo="Typo.subtitle1">Audit history</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">A read-only activity surface is reserved in navigation.</MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudStack>
+
+@code {
+    private PlatformStatus? _status;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _status = await Sender.Send(new GetPlatformStatusQuery());
+    }
+}

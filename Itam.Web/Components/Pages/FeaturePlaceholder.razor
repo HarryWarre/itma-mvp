@@ -1,0 +1,37 @@
+@page "/dashboard"
+@page "/account"
+@page "/settings"
+@page "/audit-log"
+@attribute [Authorize]
+@inject NavigationManager Navigation
+
+<PageTitle>@FeatureName | ITMA</PageTitle>
+
+<MudBreadcrumbs Items="Breadcrumbs" Class="px-0" />
+<MudPaper Class="pa-6" Elevation="1">
+    <MudText Typo="Typo.h4" GutterBottom="true">@FeatureName</MudText>
+    <MudText Typo="Typo.body1" Color="Color.Secondary">
+        This protected feature surface is ready for its vertical slice.
+    </MudText>
+</MudPaper>
+
+@code {
+    private string FeatureName
+    {
+        get
+        {
+            var value = Navigation.ToBaseRelativePath(Navigation.Uri)
+                .Trim('/')
+                .Replace('-', ' ');
+            return string.IsNullOrWhiteSpace(value)
+                ? "Dashboard"
+                : char.ToUpperInvariant(value[0]) + value[1..];
+        }
+    }
+
+    private List<BreadcrumbItem> Breadcrumbs =>
+    [
+        new("Home", href: "/"),
+        new(FeatureName, href: null, disabled: true)
+    ];
+}
