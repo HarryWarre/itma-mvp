@@ -47,16 +47,75 @@
     {
         PaletteLight = new PaletteLight
         {
-            Primary = "#375DFB",
-            Secondary = "#6B7280",
+            Primary = BrandColors.Primary,
+            Secondary = BrandColors.Secondary,
+            Tertiary = BrandColors.Tertiary,
+            Info = BrandColors.Primary,
+            Success = "#16A34A",
+            Warning = "#D97706",
+            Error = "#DC2626",
+            Dark = BrandColors.Ink,
+            TextPrimary = BrandColors.Ink,
+            TextSecondary = BrandColors.Secondary,
+            Background = BrandColors.Neutral,
+            BackgroundGray = "#F1F5F9",
+            Surface = BrandColors.White,
+            DrawerBackground = BrandColors.White,
+            DrawerText = BrandColors.Ink,
+            DrawerIcon = BrandColors.Secondary,
+            LinesDefault = "#E2E8F0",
+            LinesInputs = "#CBD5E1",
+            Divider = "#E2E8F0",
             AppbarBackground = "#111827",
             AppbarText = "#FFFFFF"
         },
+        PaletteDark = new PaletteDark
+        {
+            Primary = "#60A5FA",
+            Secondary = "#94A3B8",
+            Tertiary = "#FB923C",
+            Info = "#60A5FA",
+            Success = "#4ADE80",
+            Warning = "#FBBF24",
+            Error = "#F87171",
+            Dark = BrandColors.White,
+            TextPrimary = "#F8FAFC",
+            TextSecondary = "#CBD5E1",
+            Background = "#0F172A",
+            BackgroundGray = "#111827",
+            Surface = "#1E293B",
+            DrawerBackground = "#111827",
+            DrawerText = "#F8FAFC",
+            DrawerIcon = "#94A3B8",
+            LinesDefault = "#334155",
+            LinesInputs = "#475569",
+            Divider = "#334155",
+            AppbarBackground = "#020617",
+            AppbarText = "#F8FAFC"
+        },
+        Typography = new Typography
+        {
+            Default = new DefaultTypography
+            {
+                FontFamily = ["Inter", "Helvetica Neue", "Arial", "sans-serif"]
+            }
+        },
         LayoutProperties = new LayoutProperties
         {
-            DefaultBorderRadius = "10px"
+            DefaultBorderRadius = "10px",
+            DrawerWidthLeft = "280px"
         }
     };
+
+    private static class BrandColors
+    {
+        public const string Primary = "#2563EB";
+        public const string Secondary = "#64748B";
+        public const string Tertiary = "#BC4800";
+        public const string Neutral = "#F8FAFC";
+        public const string Ink = "#111827";
+        public const string White = "#FFFFFF";
+    }
 
     private void ToggleDrawer() => _drawerOpen = !_drawerOpen;
 }
