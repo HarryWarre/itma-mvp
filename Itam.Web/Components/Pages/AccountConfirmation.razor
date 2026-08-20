@@ -1,0 +1,28 @@
+@page "/account/check-email"
+@page "/account/confirmation-result"
+@attribute [AllowAnonymous]
+
+<PageTitle>Email confirmation | ITMA</PageTitle>
+
+<MudPaper Class="pa-6 mx-auto" MaxWidth="MaxWidth.Small">
+    @if (Success is null)
+    {
+        <MudText Typo="Typo.h4" GutterBottom="true">Check your email</MudText>
+        <MudText Typo="Typo.body1">Open the confirmation link we sent before signing in.</MudText>
+    }
+    else if (Success == "true")
+    {
+        <MudText Typo="Typo.h4" GutterBottom="true">Email confirmed</MudText>
+        <MudText Typo="Typo.body1">Your account is ready. You can sign in now.</MudText>
+        <MudButton Href="/account/login" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">Sign in</MudButton>
+    }
+    else
+    {
+        <MudAlert Severity="Severity.Error">This confirmation link is invalid or expired.</MudAlert>
+    }
+</MudPaper>
+
+@code {
+    [SupplyParameterFromQuery(Name = "success")]
+    private string? Success { get; set; }
+}

@@ -1,0 +1,21 @@
+<svg width="1200" height="360" viewBox="0 0 1200 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>Systemic Asset Intelligence Logo</title>
+  <g transform="translate(40 35)">
+    <path d="M140 20L235 75V185L140 240L45 185V75L140 20Z" fill="none" stroke="#2563EB" stroke-width="20" stroke-linejoin="round"/>
+    <path d="M45 185V240L140 295L235 240V185" fill="none" stroke="#BC4800" stroke-width="20" stroke-linejoin="round"/>
+    <circle cx="140" cy="20" r="24" fill="#2563EB" stroke="#F8FAFC" stroke-width="8"/>
+    <circle cx="45" cy="185" r="24" fill="#2563EB" stroke="#F8FAFC" stroke-width="8"/>
+    <circle cx="235" cy="185" r="24" fill="#64748B" stroke="#F8FAFC" stroke-width="8"/>
+    <circle cx="140" cy="295" r="24" fill="#BC4800" stroke="#F8FAFC" stroke-width="8"/>
+    <path d="M86 115L140 84L194 115V177L140 208L86 177V115Z" fill="#2563EB" stroke="#F8FAFC" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M86 115L140 147L194 115M140 147V208M96 140L126 157M96 158L126 175M154 157L184 140" stroke="#F8FAFC" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M145 99H177L192 114L177 129H145L130 114L145 99Z" fill="#F8FAFC"/>
+    <circle cx="174" cy="114" r="5" fill="#2563EB"/>
+  </g>
+  <g transform="translate(360 85)">
+    <text x="0" y="120" font-family="Inter, Arial, Helvetica, sans-serif" font-size="128" font-weight="700" letter-spacing="-5" fill="#2563EB">Systemic</text>
+    <rect x="4" y="175" width="125" height="10" rx="5" fill="#2563EB"/>
+    <text x="155" y="197" font-family="Inter, Arial, Helvetica, sans-serif" font-size="37" font-weight="600" letter-spacing="11" fill="#1F2937">ASSET INTELLIGENCE</text>
+    <rect x="925" y="175" width="125" height="10" rx="5" fill="#BC4800"/>
+  </g>
+</svg>

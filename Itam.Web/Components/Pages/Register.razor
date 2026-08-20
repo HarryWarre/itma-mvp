@@ -1,0 +1,29 @@
+@page "/account/register"
+@attribute [AllowAnonymous]
+
+<PageTitle>Register | ITMA</PageTitle>
+
+<MudPaper Class="pa-6 mx-auto" MaxWidth="MaxWidth.Small">
+    <MudText Typo="Typo.h4" GutterBottom="true">Create your ITMA workspace</MudText>
+    <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-4">
+        Your account receives one isolated workspace and the fixed Owner role.
+    </MudText>
+    @if (!string.IsNullOrWhiteSpace(Error))
+    {
+        <MudAlert Severity="Severity.Error" Class="mb-4">@Error</MudAlert>
+    }
+    <form method="post" action="/api/account/register">
+        <AntiforgeryToken />
+        <label class="d-block mb-3">Email<input class="mud-input-root mud-input-root-text mud-input-outlined" type="email" name="Email" autocomplete="email" required /></label>
+        <label class="d-block mb-3">Password<input class="mud-input-root mud-input-root-text mud-input-outlined" type="password" name="Password" autocomplete="new-password" required /></label>
+        <label class="d-block mb-3">Workspace name<input class="mud-input-root mud-input-root-text mud-input-outlined" type="text" name="TenantName" required /></label>
+        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">Register</MudButton>
+    </form>
+    <MudLink Href="/account/login" Class="d-block mt-4">Already have an account? Sign in</MudLink>
+</MudPaper>
+
+@code {
+    [SupplyParameterFromQuery(Name = "error")]
+    private string? Error { get; set; }
+
+}

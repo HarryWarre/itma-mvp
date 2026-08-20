@@ -1,0 +1,56 @@
+@page "/settings"
+@rendermode InteractiveServer
+@attribute [Authorize]
+@inject ISender Sender
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<PageTitle>Settings | ITMA</PageTitle>
+
+<MudText Typo="Typo.h4" GutterBottom="true">Settings</MudText>
+<MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-4">
+    User values override tenant values, which override system defaults.
+</MudText>
+
+@if (!string.IsNullOrWhiteSpace(_message))
+{
+    <MudAlert Severity="@(_saved ? Severity.Success : Severity.Error)" Class="mb-4">@_message</MudAlert>
+}
+
+<MudGrid>
+    @foreach (var setting in _settings)
+    {
+        <MudItem xs="12" sm="6">
+            <MudPaper Class="pa-4">
+                <MudText Typo="Typo.subtitle1">@setting.Key</MudText>
+                <MudText Typo="Typo.caption" Color="Color.Secondary">Source: @setting.Scope</MudText>
+                <MudTextField Label="Value" @bind-Value="setting.Value" Class="mt-2" />
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" Class="mt-2" OnClick="@(() => Save(setting))">Save</MudButton>
+            </MudPaper>
+        </MudItem>
+    }
+</MudGrid>
+
+@code {
+    private string _userId = string.Empty;
+    private string? _message;
+    private bool _saved;
+    private List<SettingValue> _settings = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        _userId = state.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+        _settings = (await Sender.Send(new GetSettingsQuery(_userId))).ToList();
+    }
+
+    private async Task Save(SettingValue setting)
+    {
+        var result = await Sender.Send(new SaveSettingCommand(_userId, setting.Key, setting.Value, "user"));
+        _saved = result.Succeeded;
+        _message = result.Succeeded ? "Setting saved." : result.Error;
+        if (result.Succeeded)
+        {
+            _settings = (await Sender.Send(new GetSettingsQuery(_userId))).ToList();
+        }
+    }
+}

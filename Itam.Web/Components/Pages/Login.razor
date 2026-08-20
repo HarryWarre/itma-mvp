@@ -1,0 +1,33 @@
+@page "/account/login"
+@attribute [AllowAnonymous]
+
+<PageTitle>Sign in | ITMA</PageTitle>
+
+<MudPaper Class="pa-6 mx-auto" MaxWidth="MaxWidth.Small">
+    <MudText Typo="Typo.h4" GutterBottom="true">Sign in to ITMA</MudText>
+    @if (!string.IsNullOrWhiteSpace(Error))
+    {
+        <MudAlert Severity="Severity.Error" Class="mb-4">@Error</MudAlert>
+    }
+    @if (Reset == "success")
+    {
+        <MudAlert Severity="Severity.Success" Class="mb-4">Your password was reset. You can sign in now.</MudAlert>
+    }
+    <form method="post" action="/api/account/login">
+        <AntiforgeryToken />
+        <label class="d-block mb-3">Email<input class="mud-input-root mud-input-root-text mud-input-outlined" type="email" name="Email" autocomplete="email" required /></label>
+        <label class="d-block mb-3">Password<input class="mud-input-root mud-input-root-text mud-input-outlined" type="password" name="Password" autocomplete="current-password" required /></label>
+        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">Sign in</MudButton>
+    </form>
+    <MudLink Href="/account/register" Class="d-block mt-4">Create an account</MudLink>
+    <MudLink Href="/account/forgot-password" Class="d-block mt-2">Forgot your password?</MudLink>
+</MudPaper>
+
+@code {
+    [SupplyParameterFromQuery(Name = "error")]
+    private string? Error { get; set; }
+
+    [SupplyParameterFromQuery(Name = "reset")]
+    private string? Reset { get; set; }
+
+}
